@@ -4,8 +4,8 @@
 // ============================================================
 
 export const SECCIONES = [
-  { id: 'abc', nombre: 'Abecedario', descripcion: 'Alfabeto dactilológico — 29 letras', orden: 1, emoji: '🔤' },
-  { id: 'col', nombre: 'Colores',    descripcion: 'Vocabulario básico de colores',        orden: 2, emoji: '🎨' },
+  { id: 'abc', nombre: 'Abecedario', descripcion: 'Alfabeto dactilológico — 29 letras', orden: 1, emoji: '🤟' },
+  { id: 'col', nombre: 'Colores',    descripcion: 'Vocabulario básico de colores',        orden: 2, emoji: '🖌️' },
 ];
 
 const BASE = 'https://jgynbubbhxftlzstmwjq.supabase.co/storage/v1/object/public';
