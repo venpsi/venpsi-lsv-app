@@ -1,0 +1,19 @@
+{
+  "name": "venpsi-lsv",
+  "version": "1.0.0",
+  "description": "Aplicación web responsive para el aprendizaje de la **Lengua de Señas Venezolana (LSV)**.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.2",
+    "vite": "^8.0.14"
+  }
+}
