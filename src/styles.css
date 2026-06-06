@@ -264,12 +264,15 @@ html, body { height: 100%; overflow: hidden; background: #1a2535; }
 
 /* ── Lesson view ─────────────────────────────────────────── */
 #screen-lesson-view {
-  display: flex !important;
+  display: none; /* CORRECCIÓN: Quitamos display:flex !important para que no se encime en el Inicio */
   flex-direction: column;
   height: 100%;
-  overflow-y: auto !important;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden; /* CORRECCIÓN: El contenedor principal se queda fijo para controlar el scroll */
+}
+
+/* NUEVA REGLA: Permite que JavaScript controle cuándo mostrar esta pantalla de forma limpia */
+#screen-lesson-view.active {
+  display: flex;
 }
 
 #screen-lesson-view .lv-header {
@@ -311,7 +314,9 @@ html, body { height: 100%; overflow: hidden; background: #1a2535; }
 
 #screen-lesson-view .lv-body {
   padding: 16px 20px;
-  flex-shrink: 0;
+  flex: 1; /* CORRECCIÓN: Toma el espacio disponible */
+  overflow-y: auto; /* CORRECCIÓN: Hace que solo el texto de la descripción tenga scroll si es largo */
+  -webkit-overflow-scrolling: touch;
 }
 
 .lv-desc-card  { margin-bottom: 16px; }
