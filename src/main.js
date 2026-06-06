@@ -34,7 +34,6 @@ function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('screen-' + id);
   if (el) el.classList.add('active');
-  updateAppScroll(id);   // ← agrega esta línea
 }
 
 
