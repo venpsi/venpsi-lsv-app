@@ -34,7 +34,13 @@ function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('screen-' + id);
   if (el) el.classList.add('active');
+  
+  // CORRECCIÓN: Ejecuta automáticamente la función que libera el scroll en móviles
+  if (typeof updateAppScroll === 'function') {
+    updateAppScroll(id);
+  }
 }
+
 
 
 
