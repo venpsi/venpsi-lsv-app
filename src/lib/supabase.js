@@ -21,7 +21,10 @@ function authHeaders() {
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
-export async function signUp({ email, password, nombre, apellido, edad }) {
+export async function signUp({ email, password, nombre, apellido, edad, options }) {
+  // CORRECCIÓN: Si vienen opciones, extraemos el emailRedirectTo para la API de Supabase
+  const redirectTo = options?.emailRedirectTo || undefined;
+
   const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
     method: 'POST',
     headers,
@@ -29,6 +32,8 @@ export async function signUp({ email, password, nombre, apellido, edad }) {
       email,
       password,
       data: { nombre: `${nombre} ${apellido}`.trim(), edad },
+      // CORRECCIÓN: La API nativa espera 'redirect_to' para los enlaces de correo
+      ...(redirectTo && { redirect_to: redirectTo })
     }),
   });
   const data = await res.json();
@@ -36,6 +41,7 @@ export async function signUp({ email, password, nombre, apellido, edad }) {
   if (data.session) _session = data.session;
   return data;
 }
+
 
 export async function signIn({ email, password }) {
   const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
