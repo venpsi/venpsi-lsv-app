@@ -670,10 +670,10 @@ function buildHTML() {
         <div class="home-avatar" id="home-avatar" onclick="goProfile()">?</div>
       </div>
       <div class="home-stats">
-        <div><div class="stat-num" id="stat-pts">0</div><div class="stat-lbl">Puntos</div></div>
-        <div><div class="stat-num" id="stat-racha">1</div><div class="stat-lbl">&#x1F525; Racha</div>
-        <div><div class="stat-num" id="stat-lecc">0</div><div class="stat-lbl">Lecciones</div></div>
-      </div>
+   <div><div class="stat-num" id="stat-pts">0</div><div class="stat-lbl">Puntos</div></div>
+   <div><div class="stat-num" id="stat-racha">1</div><div class="stat-lbl">&#x1F525; Racha</div></div>
+   <div><div class="stat-num" id="stat-lecc">0</div><div class="stat-lbl">Lecciones</div></div>
+ </div>
       <div class="scroll" style="padding:20px">
         <div class="section-title">Secciones</div>
         <div id="sections-list"></div>
