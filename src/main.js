@@ -609,7 +609,7 @@ function buildHTML() {
  <ul style="list-style-type: disc; margin: 0; padding-left: 20px; color: #444;">
  <li style="margin-bottom: 4px;">Moncada Isabella</li>
  <li style="margin-bottom: 4px;">Olivares Andrés</li>
- <li style="margin-bottom: 4px;">Olivares Julia</li>
+ <li style="margin-bottom: 4px;">Olivares Júlia</li>
  </ul>
  </div>
  </div> <!-- Cierra .welcome-desc -->
