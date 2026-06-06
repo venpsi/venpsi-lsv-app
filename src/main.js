@@ -81,49 +81,66 @@ window.switchAuthTab = (tab) => {
 window.doRegister = async () => {
   const f = (id) => document.getElementById(id)?.value?.trim();
   const err = document.getElementById("reg-error");
+  err.removeAttribute("style");
   err.classList.remove("show");
+  
   const nombre = f("reg-nombre"),
-    apellido = f("reg-apellido");
-  const edad = f("reg-edad"),
-    email = f("reg-email"),
-    pass = f("reg-pass");
+        apellido = f("reg-apellido"),
+        edad = f("reg-edad"),
+        email = f("reg-email"),
+        pass = f("reg-pass");
+
   if (!nombre || !email || !pass) {
     err.textContent = "Completa todos los campos obligatorios.";
     err.classList.add("show");
     return;
-    
   }
   if (pass.length < 6) {
     err.textContent = "La contraseña debe tener al menos 6 caracteres.";
     err.classList.add("show");
     return;
   }
+
   try {
+    // CORRECCIÓN: Usamos tu URL real en producción para que vuelvan a tu app
     const data = await signUp({
       email,
       password: pass,
       nombre,
       apellido,
       edad,
+      options: {
+        emailRedirectTo: 'https://venpsi-lsv-app.vercel.app/'
+      }
     });
-    state.session = data.session;
-    state.usuario = {
-      nombre: `${nombre} ${apellido}`.trim(),
-      email,
-      edad,
-      pts_totales: 0,
-      racha: 1,
-      created_at: new Date().toISOString(),
-      id: data.user?.id,
-    };
-    state.isGuest = false;
-    renderHome();
-    show("home");
+
+    // Cambiamos el estilo del error temporalmente para mostrar un mensaje de éxito azul/verde
+    err.style.background = "#D1FAE5";
+    err.style.borderColor = "#6EE7B7";
+    err.style.color = "#065F46";
+    err.textContent = "✉️ Registro casi listo. Revisa tu correo para confirmar tu cuenta.";
+    err.classList.add("show");
+
+    // Limpiamos los campos del formulario de registro
+    ["reg-nombre", "reg-apellido", "reg-edad", "reg-email", "reg-pass"].forEach(id => {
+      const input = document.getElementById(id);
+      if (input) input.value = "";
+    });
+
+    // Esperamos 4 segundos para que lean el mensaje y los mandamos directamente al login
+    setTimeout(() => {
+      err.removeAttribute("style");
+      err.classList.remove("show");
+      switchAuthTab("login");
+      show("auth");
+    }, 4000);
+
   } catch (e) {
     err.textContent = e.message || "Error al registrar.";
     err.classList.add("show");
   }
 };
+
 
 window.doLogin = async () => {
   const f = (id) => document.getElementById(id)?.value?.trim();
