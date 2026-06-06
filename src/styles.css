@@ -155,13 +155,33 @@ html, body { height: 100%; overflow: hidden; background: #1a2535; }
 
 /* ── Welcome ─────────────────────────────────────────────── */
 .welcome-media {
-  width: 100%; height: 260px; flex-shrink: 0;
+  width: 100%; 
+  height: auto; /* CORRECCIÓN: El contenedor se estira al tamaño original del video */
+  flex-shrink: 0;
   background: linear-gradient(135deg, #0D3F6E, #2E86D4);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  position: relative; 
+  overflow: visible; /* CORRECCIÓN: Permite que el campo del video respire sin cortes */
 }
-.welcome-media video,
-.welcome-media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* CORRECCIÓN: El video mantiene sus proporciones exactas sin estirarse ni recortarse */
+.welcome-media video { 
+  width: 100%; 
+  height: auto; 
+  object-fit: contain; 
+  display: block;
+}
+
+/* CORRECCIÓN: Las imágenes de respaldo también se adaptan de forma limpia */
+.welcome-media img { 
+  width: 100%; 
+  height: auto; 
+  object-fit: contain; 
+  display: block;
+}
+
 .welcome-media-ph {
   display: flex; flex-direction: column; align-items: center;
   gap: 10px; color: rgba(255,255,255,0.75); text-align: center;
@@ -178,6 +198,7 @@ html, body { height: 100%; overflow: hidden; background: #1a2535; }
 .welcome-tagline { font-size: 12px; color: var(--muted); }
 .welcome-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
 .welcome-footer { padding: 12px 24px max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
+
 
 /* ── Auth ────────────────────────────────────────────────── */
 .auth-hero {
