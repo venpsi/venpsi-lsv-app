@@ -31,14 +31,11 @@ import {
 
 // ── Screen navigation ─────────────────────────────────────────
 function show(id) {
-  document
-    .querySelectorAll(".screen")
-    .forEach((s) => s.classList.remove("active"));
-  const el = document.getElementById("screen-" + id);
-  if (el) el.classList.add("active");
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + id);
+  if (el) el.classList.add('active');
+  updateAppScroll(id);   // ← agrega esta línea
 }
-
-
 
 
 
@@ -297,35 +294,30 @@ window.openSection = (secId) => {
 
 
 window.openLesson = (secId, lessonId) => {
-  const lesson = (LECCIONES[secId] || []).find((l) => l.id === lessonId);
-  if (!lesson) return;
-
-  state.leccionActual = { ...lesson, secId };
-  set("lv-title", lesson.titulo);
-  set("lv-desc", lesson.descripcion);
-
-  const media = document.getElementById("lv-media");
-  const url = lesson.video || ""; 
-  
-  const isVid = /\.(mp4|webm|ogg)$/i.test(url);
-  const isImg = /\.(png|jpg|jpeg|gif|webp)$/i.test(url);
-
-  if (isVid) {
-    media.style.height = "auto";
-    media.style.padding = "16px 0";
-    media.innerHTML = `<video src="${url}" controls playsinline autoplay style="width:100%; 
-max-width:320px; height:auto; margin:0 auto; display:block; border-radius:12px; box-shadow:0 4px 
-10px rgba(0,0,0,0.15); object-fit:contain"></video>`;
-  } else if (isImg) {
-    media.style.height = "auto";
-    media.style.padding = "16px 0";
-    media.innerHTML = `<img src="${url}" alt="${lesson.titulo}" style="width:100%; max-width:320px; height:auto; margin:0 auto; display:block; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.15); object-fit:contain" />`;
-  } else {
-    media.innerHTML = `<div class="lv-media-ph"><div class="big">🔲</div></div>`;
-  }
-
-  show("lesson-view");
+ const lesson = (LECCIONES[secId] || []).find((l) => l.id === lessonId);
+ if (!lesson) return;
+ state.leccionActual = { ...lesson, secId };
+ set("lv-title", lesson.titulo);
+ set("lv-desc", lesson.descripcion);
+ const media = document.getElementById("lv-media");
+ const url = lesson.video || "";
+ const isVid = /\.(mp4|webm|ogg)$/i.test(url);
+ const isImg = /\.(png|jpg|jpeg|gif|webp)$/i.test(url);
+ 
+ media.style.height = "";
+ media.style.padding = "";
+ 
+ if (isVid) {
+   // playsinline impide que iOS y Android abran el video en el reproductor nativo del sistema
+   media.innerHTML = `<video src="${url}" controls playsinline autoplay loop muted class="responsive-media"></video>`;
+ } else if (isImg) {
+   media.innerHTML = `<img src="${url}" alt="${lesson.titulo}" class="responsive-media" />`;
+ } else {
+   media.innerHTML = `<div class="lv-media-ph"><div class="big"> </div></div>`;
+ }
+ show("lesson-view");
 };
+
 
 window.backFromLesson = () => {
   if (state.seccionActual) openSection(state.seccionActual);
@@ -667,14 +659,14 @@ function buildHTML() {
     <div id="screen-home" class="screen">
       <div class="home-topbar">
         <div class="home-greeting">
-          <div class="home-greeting-hi">👋 Bienvenido/a</div>
+          <div class="home-greeting-hi">Bienvenido/a</div>
           <div class="home-greeting-name" id="home-name">...</div>
         </div>
         <div class="home-avatar" id="home-avatar" onclick="goProfile()">?</div>
       </div>
       <div class="home-stats">
         <div><div class="stat-num" id="stat-pts">0</div><div class="stat-lbl">Puntos</div></div>
-        <div><div class="stat-num" id="stat-racha">1</div><div class="stat-lbl">🔥 Racha</div></div>
+        <div><div class="stat-num" id="stat-racha">1</div><div class="stat-lbl">&#x1F525; Racha</div>
         <div><div class="stat-num" id="stat-lecc">0</div><div class="stat-lbl">Lecciones</div></div>
       </div>
       <div class="scroll" style="padding:20px">
@@ -684,7 +676,9 @@ function buildHTML() {
       <div class="bottom-nav">
         <button class="nav-btn active" onclick="goHome()"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
         <button class="nav-btn" onclick="if(state.seccionActual) openSection(state.seccionActual); else openSection('abc')"><span class="nav-icon">📚</span><span class="nav-label">Lecciones</span></button>
-        <button class="nav-btn" onclick="goProfile()"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+        <button class="nav-btn" onclick="goProfile()"><span class="nav-icon nav-icon-svg">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+</span><span class="nav-label">Perfil</span></button>
       </div>
     </div>
 
@@ -901,6 +895,7 @@ function startMusic() {
 document.addEventListener("click", startMusic);
 document.addEventListener("touchstart", startMusic);
 
+
 // Botón para silenciar / reanudar
 window.toggleMusic = () => {
   const btn = document.getElementById("music-toggle");
@@ -912,3 +907,18 @@ window.toggleMusic = () => {
     btn.textContent = "🔇";
   }
 };
+
+// ── Scroll natural para lesson-view ──────────────────────
+function updateAppScroll(screenId) {
+  const app = document.getElementById('app');
+  if (screenId === 'lesson-view') {
+    app.style.overflowY = 'auto';
+    app.style.height = 'auto';
+    app.style.minHeight = '100dvh';
+  } else {
+    app.style.overflowY = 'hidden';
+    app.style.height = '100dvh';
+    app.style.minHeight = '';
+  }
+}
+
